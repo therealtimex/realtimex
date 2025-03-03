@@ -1,7 +1,13 @@
+const {
+  EventStreamContentType,
+  fetchEventSource,
+} = require("@fortaine/fetch-event-source")
+
 const { EventEmitter } = require("events");
 const { APIError } = require("./error.js");
 const Providers = require("./providers/index.js");
 const { Telemetry } = require("../../../models/telemetry.js");
+const { v4: uuidv4 } = require("uuid");
 
 /**
  * AIbitat is a class that manages the conversation between agents.
@@ -22,12 +28,15 @@ class AIbitat {
   channels = new Map();
   functions = new Map();
 
+  agentName = null;
+
   constructor(props = {}) {
     const {
       chats = [],
       interrupt = "NEVER",
       maxRounds = 100,
       provider = "openai",
+      agentName = "@agent",
       handlerProps = {}, // Inherited props we can spread so aibitat can access.
       ...rest
     } = props;
@@ -42,6 +51,10 @@ class AIbitat {
     };
     this.provider = this.defaultProvider.provider;
     this.model = this.defaultProvider.model;
+
+    this.agentName = agentName
+    this.uuid = uuidv4()
+    // this.uuid = "dfgdfgdfgdfg"
   }
 
   /**
@@ -232,8 +245,15 @@ class AIbitat {
       ...message,
       state: "success",
     };
-
     this._chats.push(chat);
+    // if(message.from != "USER" && message.to != "USER"){
+    //   this._chats.push({
+    //     ...message,
+    //     "to": "USER",
+    //     "from": "@agent"
+    //   });
+    //   console.log(this._chats)
+    // }
     this.emitter.emit("message", chat, this);
   }
 
@@ -367,6 +387,9 @@ class AIbitat {
       await this.chat(nextChat);
       return;
     }
+
+    // console.log("route",route)
+    // console.log("history",this.getHistory(route))
 
     // If it's a direct message, reply to the message
     let reply = "";
@@ -528,6 +551,190 @@ Only return the role.
    * @param route.from The node that will reply to the chat.
    */
   async reply(route) {
+    const history = this.getHistory(route)
+    const chat_messages =  history.map(message => {
+      return {
+        "role":message.to=="USER"?"assistant":"user",
+        "content":message.content.replace(this.agentName,"").trim()
+      }
+    })
+    if(this.agentName == "@realtimex-on"){
+      const ctrl = new AbortController();
+      var self = this
+
+      let createPath = "http://127.0.0.1:8001/agent"
+      await fetch(createPath, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          agent_id: this.uuid,
+          messages: chat_messages,
+          model: "gpt-4o-mini",
+          temperature: 0.0
+          // max_tokens: Math.max(modelConfig.max_tokens, 1024),
+          // Please do not ask me why not send max_tokens, no reason, this param is just shit, I dont want to explain anymore.
+          // "task": messages[-1].content
+        })
+      })
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+
+      let runPath = "http://127.0.0.1:8001/agent/run"
+      fetch(runPath, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          "agent_id": this.uuid
+        })
+      });
+
+
+
+      await fetchEventSource('http://127.0.0.1:8001/agent/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "agent_id": this.uuid
+        }),
+        signal: ctrl.signal,
+        async onopen(response) {
+            console.log("sdfdsfsd")
+            if (response.ok && response.headers.get('content-type') === EventStreamContentType) {
+                return; // everything's good
+            } else if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+                // client-side errors are usually non-retriable:
+                // throw new FatalError();
+            } else {
+                // throw new RetriableError();
+            }
+        },
+        onmessage(msg) {
+            // if the server emits an error message, throw an exception
+            // so it gets handled by the onerror callback below:
+            // console.log(msg)
+            try {
+              const msg_data = JSON.parse(msg.data)
+              const message_type = msg_data.choices[0].delta.type
+              const message_content = msg_data.choices[0].delta.content
+              if(message_type == "statusResponse"){
+                self?.introspect?.(
+                  message_content
+                );
+              }else{
+                self.newMessage({ ...route, "content": message_content });
+                self.newMessage({ ...route, to: self.agentName, from: 'USER', "content": "[next]" });
+              }
+            } catch (e) {
+                
+            }
+            
+        },
+        onclose() {
+            // if the server closes the connection unexpectedly, retry:
+            // throw new RetriableError();
+        },
+        onerror(err) {
+          console.log(err)
+            // if (err instanceof FatalError) {
+            //     throw err; // rethrow to stop the operation
+            // } else {
+            //     // do nothing to automatically retry. You can also
+            //     // return a specific retry interval here.
+            // }
+        }
+      });
+
+      return "";
+    }else if (this.agentName == "@task"){
+      const ctrl = new AbortController();
+      // console.log("2323ewqe")
+      var self = this
+     
+      let runPath = "http://127.0.0.1:8002/task/run-test"
+      fetch(runPath, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          "messages":chat_messages,
+          "config":{
+              "builder_model":"gpt-4o-mini",
+              "agent_model":"gpt-4o-mini",
+              "planning_model": "o3-mini",
+              "tools":[],
+              "max_turns": 1
+          },
+          "execution_id": this.uuid,
+          "matrix_room_id":"!cwOlxEfxyxrVdHQNrh:vn-rtmessaging.rtcenter.org"
+        })
+      });
+
+      console.log("lalaallll")
+
+      await fetchEventSource('http://127.0.0.1:8002/task/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "execution_id": this.uuid
+        }),
+        signal: ctrl.signal,
+        async onopen(response) {
+            console.log("alalala")
+            if (response.ok && response.headers.get('content-type') === EventStreamContentType) {
+                return; // everything's good
+            } else if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+                // client-side errors are usually non-retriable:
+                // throw new FatalError();
+            } else {
+                // throw new RetriableError();
+            }
+        },
+        onmessage(msg) {
+            // if the server emits an error message, throw an exception
+            // so it gets handled by the onerror callback below:
+            console.log(msg)
+            try {
+              const msg_data = JSON.parse(msg.data)
+              const message_type = msg_data.choices[0].delta.type
+              const message_content = msg_data.choices[0].delta.content
+              if(message_type == "statusResponse"){
+                self?.introspect?.(
+                  message_content
+                );
+              }else{
+                self.newMessage({ ...route, "content": message_content });
+                self.newMessage({ ...route, to: self.agentName, from: 'USER', "content": "[next]" });
+              }
+            } catch (e) {
+                
+            }
+            
+        },
+        onclose() {
+          
+        },
+        onerror(err) {
+          console.log(err)
+        }
+      });
+
+      return "";
+    }
+    // fetchEventSource
+
     // get the provider for the node that will reply
     const fromConfig = this.getAgentConfig(route.from);
 
@@ -581,6 +788,8 @@ ${this.getHistory({ to: route.to })
       functions,
       route.from
     );
+    // console.log("content",content)
+    // console.log("content",{ ...route, content })
     this.newMessage({ ...route, content });
 
     return content;

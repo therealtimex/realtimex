@@ -5,7 +5,7 @@ const WorkspaceAgentInvocation = {
   // returns array of strings with their @ handle.
   // must start with @agent for now.
   parseAgents: function (promptString) {
-    if (!promptString.startsWith("@agent")) return [];
+    if (!promptString.startsWith("@")) return [];
     return promptString.split(/\s+/).filter((v) => v.startsWith("@"));
   },
 

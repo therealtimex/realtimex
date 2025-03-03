@@ -26,6 +26,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [chatHistory, setChatHistory] = useState(knownHistory);
   const [socketId, setSocketId] = useState(null);
+  const [agentName, setAgentName] = useState(null);
   const [websocket, setWebsocket] = useState(null);
   const { files, parseAttachments } = useContext(DndUploaderContext);
 
@@ -181,7 +182,8 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
             setChatHistory,
             remHistory,
             _chatHistory,
-            setSocketId
+            setSocketId,
+            setAgentName
           ),
         attachments,
       });
@@ -196,7 +198,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       try {
         if (!socketId || !!websocket) return;
         const socket = new WebSocket(
-          `${websocketURI()}/api/agent-invocation/${socketId}`
+          `${websocketURI()}/api/agent-invocation/${socketId}/${agentName}`
         );
 
         window.addEventListener(ABORT_STREAM_EVENT, () => {

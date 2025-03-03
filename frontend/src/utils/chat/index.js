@@ -8,7 +8,8 @@ export default function handleChat(
   setChatHistory,
   remHistory,
   _chatHistory,
-  setWebsocket
+  setWebsocket,
+  setAgentName
 ) {
   const {
     uuid,
@@ -133,6 +134,9 @@ export default function handleChat(
     setChatHistory([..._chatHistory]);
   } else if (type === "agentInitWebsocketConnection") {
     setWebsocket(chatResult.websocketUUID);
+    const agentName = _chatHistory[_chatHistory.length-1].content.split(" ")[0]
+    // console.log(agentName)
+    setAgentName(agentName)
   } else if (type === "finalizeResponseStream") {
     const chatIdx = _chatHistory.findIndex((chat) => chat.uuid === uuid);
     if (chatIdx !== -1) {

@@ -95,6 +95,40 @@ export function AvailableAgents({
               </div>
             </button>
             <button
+              onClick={() => {
+                setShowing(false);
+                sendCommand("@realtimex-on ", false);
+                promptRef?.current?.focus();
+              }}
+              className="border-none w-full hover:cursor-pointer hover:bg-theme-action-menu-item-hover px-2 py-2 rounded-xl flex flex-col justify-start group"
+            >
+              <div className="w-full flex-col text-left flex pointer-events-none">
+                <div className="text-theme-text-primary text-sm">
+                  <b>@realtimex-on</b> - the realtimex-on agent for this workspace.
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <AbilityTag text="web-browsing" />
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => {
+                setShowing(false);
+                sendCommand("@task ", false);
+                promptRef?.current?.focus();
+              }}
+              className="border-none w-full hover:cursor-pointer hover:bg-theme-action-menu-item-hover px-2 py-2 rounded-xl flex flex-col justify-start group"
+            >
+              <div className="w-full flex-col text-left flex pointer-events-none">
+                <div className="text-theme-text-primary text-sm">
+                  <b>@task</b> - build a dynamic team.
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <AbilityTag text="web-browsing" />
+                </div>
+              </div>
+            </button>
+            <button
               type="button"
               disabled={true}
               className="w-full rounded-xl flex flex-col justify-start group"

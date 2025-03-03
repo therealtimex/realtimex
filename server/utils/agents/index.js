@@ -17,9 +17,11 @@ class AgentHandler {
   channel = null;
   provider = null;
   model = null;
+  agent_name = null
 
-  constructor({ uuid }) {
+  constructor({ uuid, agent_name }) {
     this.#invocationUUID = uuid;
+    this.agent_name = agent_name
   }
 
   log(text, ...args) {
@@ -51,12 +53,12 @@ class AgentHandler {
         agentHistory.push(
           {
             from: USER_AGENT.name,
-            to: WORKSPACE_AGENT.name,
+            to: this.agent_name,
             content: chatLog.prompt,
             state: "success",
           },
           {
-            from: WORKSPACE_AGENT.name,
+            from: this.agent_name,
             to: USER_AGENT.name,
             content: safeJsonParse(chatLog.response)?.text || "",
             state: "success",
@@ -449,7 +451,7 @@ class AgentHandler {
     this.log(`Attaching user and default agent to Agent cluster.`);
     this.aibitat.agent(USER_AGENT.name, await USER_AGENT.getDefinition());
     this.aibitat.agent(
-      WORKSPACE_AGENT.name,
+      this.agent_name,
       await WORKSPACE_AGENT.getDefinition(this.provider)
     );
 
@@ -474,6 +476,7 @@ class AgentHandler {
       provider: this.provider ?? "openai",
       model: this.model ?? "gpt-4o",
       chats: await this.#chatHistory(20),
+      agentName: this.agent_name,
       handlerProps: {
         invocation: this.invocation,
         log: this.log,
@@ -506,7 +509,7 @@ class AgentHandler {
   startAgentCluster() {
     return this.aibitat.start({
       from: USER_AGENT.name,
-      to: this.channel ?? WORKSPACE_AGENT.name,
+      to: this.channel ?? this.agent_name,
       content: this.invocation.prompt,
     });
   }

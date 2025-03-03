@@ -17,10 +17,11 @@ function relayToSocket(message) {
 function agentWebsocket(app) {
   if (!app) return;
 
-  app.ws("/agent-invocation/:uuid", async function (socket, request) {
+  app.ws("/agent-invocation/:uuid/:agent_name", async function (socket, request) {
     try {
       const agentHandler = await new AgentHandler({
         uuid: String(request.params.uuid),
+        agent_name: String(request.params.agent_name),
       }).init();
 
       if (!agentHandler.invocation) {
