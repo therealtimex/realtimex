@@ -56,10 +56,21 @@ jobs:
         run: yarn install # change this to npm, pnpm or bun depending on which one you use.
 
       - name: checkout realtimex-ai servers
-        run: git clone "https://oauth2:$REALTIMEX_AI_REPO_TOKEN@rtgit.rta.vn/rtlab/rtwebteam/realtimex-ai-server.git" realtimex-ai-server
+        run: git clone --depth 1 "https://oauth2:$REALTIMEX_AI_REPO_TOKEN@rtgit.rta.vn/rtlab/rtwebteam/realtimex-ai-server.git" realtimex-ai-server
         env:
-          EXTERNAL_TOKEN : ${{ secrets.REALTIMEX_AI_REPO_TOKEN }}
-        
+          REALTIMEX_AI_REPO_TOKEN : ${{ secrets.REALTIMEX_AI_REPO_TOKEN }}
+
+      # - name: checkout realtimex-ai servers lfs
+      #   run: cd realtimex-ai-server && git lfs fetch --all
+
+      - name: checkout realtimex-ai servers lfs
+        run: cd realtimex-ai-server && unzip node_modules.zip && mv node_modules ../server
+
+      - name: checkout realtimex-ai servers lfs
+        run: cd realtimex-ai-server && unzip node_env.zip && mv node_modules ../server
+
+      - name: checkout realtimex-ai servers lfs
+        run: cd realtimex-ai-server && unzip python_env.zip && mv python_env ../realtimex-ai-server
 
       - uses: tauri-apps/tauri-action@v0
         env:
