@@ -28,6 +28,8 @@ CHROME_PID=$(ps -ef | grep -v grep |grep -i "$SERVICE" | awk '{print $2;}')
 
 if [[ -n "$CHROME_PID" ]]; then
     result=`osascript -e 'display dialog "Close Google Chrome to begin?" with title "RealTimeX.AI" buttons {"Continue", "Close"}'`
+    # Display dialog using osascript
+    osascript -e 'tell application "System Events" to display dialog "RealTimeX.AI is getting ready..." with title "RealTimeX.AI" buttons {"Please wait!"} giving up after 100000' &
     if [[ "$result" = "button returned:Continue" ]]; then
         echo "Killing all Chrome instances ..."
         # Wait for processes to terminate
@@ -42,8 +44,6 @@ else
     echo "Chrome process is not running"
 fi
 
-# Display dialog using osascript
-osascript -e 'tell application "System Events" to display dialog "RealTimeX.AI is getting ready..." with title "RealTimeX.AI" buttons {"Please wait!"} giving up after 100000' &
 
 
 # else
@@ -53,7 +53,25 @@ osascript -e 'tell application "System Events" to display dialog "RealTimeX.AI i
 
 # fi
 
+# if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/python_env" ]; then
+#     cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && unzip python_env.zip && rm -f python_env.zip
+# fi
 
+# if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/server/node_modules" ]; then
+#     cd /Applications/RealTimeX\ AI.app/Contents/Resources/server/ && unzip node_modules.zip && rm -f node_modules.zip
+# fi
+
+# if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/node_env" ]; then
+#     cd /Applications/RealTimeX\ AI.app/Contents/Resources/server/ && unzip node_env.zip && rm -f node_env.zip
+# fi
+
+if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server" ]; then
+    cd /Applications/RealTimeX\ AI.app/Contents/Resources && unzip realtimex-ai-server.zip && rm -f realtimex-ai-server.zip
+fi
+
+if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/server" ]; then
+    cd /Applications/RealTimeX\ AI.app/Contents/Resources && unzip server.zip && rm -f server.zip
+fi
 
 
 # if which conda &> /dev/null; then
