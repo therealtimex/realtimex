@@ -1,11 +1,7 @@
 #!/bin/bash
 
-# curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
-# bash ~/miniconda.sh -b -p ~/miniconda
-# source ~/miniconda/bin/activate
-# conda init --all
 
-# exit()
+
 # Check and stop redis-server
 # stop_process "redis-server"
 kill -9 $(lsof -ti:6379)
@@ -47,28 +43,7 @@ else
     sleep 2
 fi
 
-
-
-# else
-#     # Display dialog using osascript
-#     osascript -e 'tell application "System Events" to display dialog "RealTimeX.AI is getting ready..." with title "RealTimeX.AI" buttons {"Please wait!"} giving up after 100000' &
-
-
-# fi
-
-# if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/python_env" ]; then
-#     cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && unzip python_env.zip && rm -f python_env.zip
-# fi
-
-# if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/server/node_modules" ]; then
-#     cd /Applications/RealTimeX\ AI.app/Contents/Resources/server/ && unzip node_modules.zip && rm -f node_modules.zip
-# fi
-
-# if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/node_env" ]; then
-#     cd /Applications/RealTimeX\ AI.app/Contents/Resources/server/ && unzip node_env.zip && rm -f node_env.zip
-# fi
-
-if [ -f "/Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server.zip" ]; then
+if [ -f "/Applications/RealTimeX AI.app/Contents/Resources/realtimex-ai-server.zip" ]; then
     osascript -e 'tell application "System Events" to click button "Please wait!" of window "RealTimeX.AI" of process "System Events"' 
 
     # Display dialog using osascript
@@ -79,33 +54,13 @@ if [ -f "/Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server.
     cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && python_env/bin/python -m pip uninstall -y dynamic_agents_server && python_env/bin/python -m pip install -e dynamic-agents/module/dynamic_agents_server
 fi
 
-if [ -f "/Applications/RealTimeX\ AI.app/Contents/Resources/server.zip" ]; then
+if [ -f "/Applications/RealTimeX AI.app/Contents/Resources/server.zip" ]; then
     cd /Applications/RealTimeX\ AI.app/Contents/Resources && unzip -qq -o server.zip && rm -f server.zip
 fi
 
 
-# if which conda &> /dev/null; then
-#     sleep 5
-# else
-#     curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
-#     bash ~/miniconda.sh -b -p ~/miniconda
-#     source ~/miniconda/bin/activate
-#     conda init --all
-# fi
-
-# if [ -d "/Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server" ]; then
-#     sleep 5
-# else
-#     unzip /Applications/RealTimeX\ AI.app/Contents/Resources/resources/packages/rton-server.zip
-#     mv ./rton-server /Applications/RealTimeX\ AI.app/Contents/Resources/resources/
-# fi
-
 
 echo "Start new Chrome instances in debug mode ..."
-# Start Chrome in debug mode
-# /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
-#   --remote-debugging-port=9222 &
-
 
 
 
@@ -117,35 +72,13 @@ echo "Start Redis Server"
 /Applications/RealTimeX\ AI.app/Contents/MacOS/redis-server &
 
 echo "Start REALTIMEX.AI ..."
-# /Applications/RealTimeX\ AI.app/Contents/MacOS/server-rton
-# conda activate /Applications/RealTimeX\ AI.app/Contents/MacOS/envs && python server.py
-# docker compose up -d
-
-# source /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/start
-# eval "$(conda shell.bash hook)"
-# /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/rton-server-envs/bin/python -m pip install -U /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/module/rton_server
-# nohup /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/rton-server-envs/bin/python /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/server.py > /Applications/RealTimeX\ AI.app/Contents/Resources/resources/myprogram.out 2>&1 &
-# /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/rton-server-envs/bin/python /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/server.py
-# conda activate /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/envs && python /Applications/RealTimeX\ AI.app/Contents/Resources/resources/rton-server/server.py
-
-# rm -f ./OAI_CONFIG_LIST
-# cp /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/OAI_CONFIG_LIST ./OAI_CONFIG_LIST
-
-# if [ ! -f /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/OAI_CONFIG_LIST ]; then
-#     cp /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/OAI_CONFIG_LIST /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/OAI_CONFIG_LIST
-# fi
 
 
 cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && nohup python_env/bin/python dynamic-agents/server.py > /Applications/RealTimeX\ AI.app/Contents/Resources/dynamic-agents.out 2>&1 &
 cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && nohup python_env/bin/python realtimex-on/server.py > /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-on.out 2>&1 &
 
-# NODE_ENV=development nohup /Applications/RealTimeX\ AI.app/Contents/Resources/server/node_env/bin/node /Applications/RealTimeX\ AI.app/Contents/Resources/server/index.js > /Applications/RealTimeX\ AI.app/Contents/Resources/server.out 2>&1 &
 cd /Applications/RealTimeX\ AI.app/Contents/Resources/server/ && NODE_ENV=development nohup node_env/bin/node index.js > /Applications/RealTimeX\ AI.app/Contents/Resources/server.out 2>&1 &
 
-# nohup python_env/bin/python realtimex-on/server.py > realtimex-on.out 2>&1 &
-
-
-# open http://localhost:3000/
 
 # Wait until a process is listening on port 8001
 while ! lsof -ti:8002 > /dev/null; do

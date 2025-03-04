@@ -60,6 +60,19 @@ jobs:
         env:
           REALTIMEX_AI_REPO_TOKEN : ${{ secrets.REALTIMEX_AI_REPO_TOKEN }}
 
+      - name: setup environment frontend
+        run: cd frontend && cp .env.example .env
+
+      - name: setup environment server
+        run: cd server && cp .env.example .env.development && sed -i "s/^OPEN_AI_KEY=.*$/OPEN_AI_KEY=$OPENAI_TEMP_TOKEN/" .env.development
+        env:
+          OPENAI_TEMP_TOKEN : ${{ secrets.OPENAI_TEMP_TOKEN }}
+      
+      - name: setup environment realtimex-ai servers
+        run: cd realtimex-ai-server &&  sed -i '' "s/OPENAI_TEMP_TOKEN/$OPENAI_TEMP_TOKEN/" OAI_CONFIG_LIST
+        env:
+          OPENAI_TEMP_TOKEN : ${{ secrets.OPENAI_TEMP_TOKEN }}
+
       - name: setup node_modules
         run: cd realtimex-ai-server && unzip -qq -o node_modules.zip && mv node_modules ../server && rm -f node_modules.zip
 
