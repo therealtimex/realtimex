@@ -75,19 +75,19 @@ jobs:
 
       - name: setup node_modules
         if: matrix.args == '--target aarch64-apple-darwin'
-        run: cd realtimex-ai-server && unzip -qq -o node_modules-aarch64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-aarch64-apple-darwin.zip
+        run: cd realtimex-ai-server && unzip -qq -o node_modules-aarch64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-*.zip
       
       - name: setup node_modules
         if: matrix.args == '--target x86_64-apple-darwin'
-        run: cd realtimex-ai-server && unzip -qq -o node_modules-x86_64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-x86_64-apple-darwin.zip
+        run: cd realtimex-ai-server && unzip -qq -o node_modules-x86_64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-*.zip
 
       - name: setup node_env
         if: matrix.args == '--target aarch64-apple-darwin'
-        run: cd realtimex-ai-server && unzip -qq -o node_env-aarch64-apple-darwin.zip && mv node_env ../server && rm -f node_env-aarch64-apple-darwin.zip
+        run: cd realtimex-ai-server && unzip -qq -o node_env-aarch64-apple-darwin.zip && mv node_env ../server && rm -f node_env-*.zip
       
       - name: setup node_env
         if: matrix.args == '--target x86_64-apple-darwin'
-        run: cd realtimex-ai-server && unzip -qq -o node_env-x86_64-apple-darwin.zip && mv node_env ../server && rm -f node_env-x86_64-apple-darwin.zip
+        run: cd realtimex-ai-server && unzip -qq -o node_env-x86_64-apple-darwin.zip && mv node_env ../server && rm -f node_env-*.zip
 
       - name: setup python_env
         run: cd realtimex-ai-server && unzip -qq -o python_env.zip && rm -f python_env.zip
