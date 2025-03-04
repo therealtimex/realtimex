@@ -63,13 +63,13 @@ jobs:
       # - name: checkout realtimex-ai servers lfs
       #   run: cd realtimex-ai-server && git lfs fetch --all
 
-      - name: checkout realtimex-ai servers lfs
+      - name: setup node_modules
         run: cd realtimex-ai-server && unzip node_modules.zip && mv node_modules ../server
 
-      - name: checkout realtimex-ai servers lfs
-        run: cd realtimex-ai-server && unzip node_env.zip && mv node_modules ../server
+      - name: setup node_env
+        run: cd realtimex-ai-server && unzip node_env.zip && mv node_env ../server
 
-      - name: checkout realtimex-ai servers lfs
+      - name: setup python_env
         run: cd realtimex-ai-server && unzip python_env.zip && mv python_env ../realtimex-ai-server
 
       - uses: tauri-apps/tauri-action@v0
