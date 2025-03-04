@@ -64,7 +64,7 @@ jobs:
         run: cd frontend && cp .env.example .env
 
       - name: setup environment server
-        run: cd server && cp .env.example .env.development && sed -i "s/^OPEN_AI_KEY=.*$/OPEN_AI_KEY=$OPENAI_TEMP_TOKEN/" .env.development
+        run: cd server && cp .env.example .env.development && sed -i ''  "s/^OPEN_AI_KEY=.*$/OPEN_AI_KEY=$OPENAI_TEMP_TOKEN/" .env.development
         env:
           OPENAI_TEMP_TOKEN : ${{ secrets.OPENAI_TEMP_TOKEN }}
       
