@@ -41,7 +41,10 @@ if [[ -n "$CHROME_PID" ]]; then
         exit 0
     fi
 else
+    # Display dialog using osascript
+    osascript -e 'tell application "System Events" to display dialog "RealTimeX.AI is getting ready..." with title "RealTimeX.AI" buttons {"Please wait!"} giving up after 100000' &
     echo "Chrome process is not running"
+    sleep 2
 fi
 
 
@@ -66,11 +69,18 @@ fi
 # fi
 
 if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server" ]; then
-    cd /Applications/RealTimeX\ AI.app/Contents/Resources && unzip realtimex-ai-server.zip && rm -f realtimex-ai-server.zip
+    osascript -e 'tell application "System Events" to click button "Please wait!" of window "RealTimeX.AI" of process "System Events"' 
+
+    # Display dialog using osascript
+    osascript -e 'tell application "System Events" to display dialog "RealTimeX.AI will take 1-2 minutes on the first time..." with title "RealTimeX.AI" buttons {"Please wait!"} giving up after 100000' &
+    
+    cd /Applications/RealTimeX\ AI.app/Contents/Resources && unzip -qq -o realtimex-ai-server.zip && rm -f realtimex-ai-server.zip
+    cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && python_env/bin/python -m pip uninstall -y rton_server && python_env/bin/python -m pip install -e realtimex-on/module/rton_server
+    cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && python_env/bin/python -m pip uninstall -y dynamic_agents_server && python_env/bin/python -m pip install -e dynamic-agents/module/dynamic_agents_server
 fi
 
 if [ ! -d "/Applications/RealTimeX\ AI.app/Contents/Resources/server" ]; then
-    cd /Applications/RealTimeX\ AI.app/Contents/Resources && unzip server.zip && rm -f server.zip
+    cd /Applications/RealTimeX\ AI.app/Contents/Resources && unzip -qq -o server.zip && rm -f server.zip
 fi
 
 
@@ -125,6 +135,7 @@ echo "Start REALTIMEX.AI ..."
 #     cp /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/OAI_CONFIG_LIST /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/OAI_CONFIG_LIST
 # fi
 
+
 cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && nohup python_env/bin/python dynamic-agents/server.py > /Applications/RealTimeX\ AI.app/Contents/Resources/dynamic-agents.out 2>&1 &
 cd /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-ai-server/ && nohup python_env/bin/python realtimex-on/server.py > /Applications/RealTimeX\ AI.app/Contents/Resources/realtimex-on.out 2>&1 &
 
@@ -144,5 +155,5 @@ done
 # Close the dialog by killing the process
 osascript -e 'tell application "System Events" to click button "Please wait!" of window "RealTimeX.AI" of process "System Events"' 
 
-/Applications/RealTimeX\ AI.app/Contents/MacOS/webapp &
+/Applications/RealTimeX\ AI.app/Contents/MacOS/app &
 
