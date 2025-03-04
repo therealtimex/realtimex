@@ -60,9 +60,6 @@ jobs:
         env:
           REALTIMEX_AI_REPO_TOKEN : ${{ secrets.REALTIMEX_AI_REPO_TOKEN }}
 
-      # - name: checkout realtimex-ai servers lfs
-      #   run: cd realtimex-ai-server && git lfs fetch --all
-
       - name: setup node_modules
         run: cd realtimex-ai-server && unzip node_modules.zip && mv node_modules ../server && rm -f node_modules.zip
 
@@ -71,6 +68,12 @@ jobs:
 
       - name: setup python_env
         run: cd realtimex-ai-server && unzip python_env.zip && rm -f python_env.zip
+
+      - name: zip server
+        run: zip -r server.zip server
+
+      - name: zip realtimex-ai servers
+        run: zip -r realtimex-ai-server.zip realtimex-ai-server
 
       - uses: tauri-apps/tauri-action@v0
         env:

@@ -38,8 +38,8 @@
       "binaries/start-app"
     ],
     "resources": {
-      "../../server":"server",
-      "../../realtimex-ai-server":"realtimex-ai-server",
+      "../../server.zip":"server.zip",
+      "../../realtimex-ai-server.zip":"realtimex-ai-server.zip",
       "resources":"resources"
     }
   }
