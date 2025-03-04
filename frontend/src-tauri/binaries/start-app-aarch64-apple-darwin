@@ -20,33 +20,28 @@ kill -9 $(lsof -ti:8002)
 
 kill -9 $(lsof -ti:3001)
 
+
+SERVICE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 # Check if port 9222 is in use
-CHROME_PID=$(lsof -ti:9222)
+CHROME_PID=$(ps -ef | grep -v grep |grep -i "$SERVICE" | awk '{print $2;}')
 
-SERVICE='Google Chrome'
 
-if [ -n "$CHROME_PID" ]; then
-    echo "9222"
-else
-    if pgrep -xq -- "Google Chrome"; then
-        result=`osascript -e 'display dialog "Close Google Chrome to begin?" with title "RealTimeX.AI" buttons {"Continue", "Close"}'`
-        if [[ "$result" = "button returned:Continue" ]]; then
-            echo "Killing all Chrome instances ..."
-            # Wait for processes to terminate
-            # sleep 10
-            # Kill all Chrome instances
-            killall "Google Chrome"
-            sleep 5
-        else
-            exit 0
-        fi
+if [[ -n "$CHROME_PID" ]]; then
+    result=`osascript -e 'display dialog "Close Google Chrome to begin?" with title "RealTimeX.AI" buttons {"Continue", "Close"}'`
+    if [[ "$result" = "button returned:Continue" ]]; then
+        echo "Killing all Chrome instances ..."
+        # Wait for processes to terminate
+        # sleep 10
+        # Kill all Chrome instances
+        killall "Google Chrome"
+        sleep 5
     else
-        echo "not running"
+        exit 0
     fi
-    # open -g -a "Google Chrome" --args --profile-directory=Default --remote-debugging-port=9222 https://google.com.vn
-    open -g -a "Google Chrome" --args --remote-debugging-port=9222 https://google.com.vn
-    
+else
+    echo "Chrome process is not running"
 fi
+
 # Display dialog using osascript
 osascript -e 'tell application "System Events" to display dialog "RealTimeX.AI is getting ready..." with title "RealTimeX.AI" buttons {"Please wait!"} giving up after 100000' &
 
@@ -131,5 +126,5 @@ done
 # Close the dialog by killing the process
 osascript -e 'tell application "System Events" to click button "Please wait!" of window "RealTimeX.AI" of process "System Events"' 
 
-/Applications/RealTimeX\ AI.app/Contents/MacOS/app &
+/Applications/RealTimeX\ AI.app/Contents/MacOS/webapp &
 

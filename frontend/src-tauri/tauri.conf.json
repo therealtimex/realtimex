@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "RealTimeX AI",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "identifier": "co.realtimex.ai",
   "build": {
     "frontendDist": "../dist",
@@ -37,9 +37,10 @@
       "binaries/redis-server",
       "binaries/start-app"
     ],
-    "resources": [
-      "../server/",
-      "../realtimex-ai-server"
-    ]
+    "resources": {
+      "../server":"server",
+      "../realtimex-ai-server":"realtimex-ai-server",
+      "resources":"resources"
+    }
   }
 }
