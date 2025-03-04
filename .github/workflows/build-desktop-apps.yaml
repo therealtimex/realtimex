@@ -61,13 +61,13 @@ jobs:
           REALTIMEX_AI_REPO_TOKEN : ${{ secrets.REALTIMEX_AI_REPO_TOKEN }}
 
       - name: setup node_modules
-        run: cd realtimex-ai-server && unzip node_modules.zip && mv node_modules ../server && rm -f node_modules.zip
+        run: cd realtimex-ai-server && unzip -qq -o node_modules.zip && mv node_modules ../server && rm -f node_modules.zip
 
       - name: setup node_env
-        run: cd realtimex-ai-server && unzip node_env.zip && mv node_env ../server && rm -f node_env.zip
+        run: cd realtimex-ai-server && unzip -qq -o node_env.zip && mv node_env ../server && rm -f node_env.zip
 
       - name: setup python_env
-        run: cd realtimex-ai-server && unzip python_env.zip && rm -f python_env.zip
+        run: cd realtimex-ai-server && unzip -qq -o python_env.zip && rm -f python_env.zip
 
       - name: zip server
         run: zip -r server.zip server
