@@ -47,9 +47,9 @@ jobs:
         # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
 
-      - name: setup environment file
-        working-directory: ./frontend
-        run: cp .env.example .env
+      # - name: setup environment file
+      #   working-directory: ./frontend
+      #   run: cp .env.example .env
 
       - name: install frontend dependencies
         working-directory: ./frontend
@@ -60,8 +60,8 @@ jobs:
         env:
           REALTIMEX_AI_REPO_TOKEN : ${{ secrets.REALTIMEX_AI_REPO_TOKEN }}
 
-      - name: setup environment frontend
-        run: cd frontend && cp .env.example .env
+      # - name: setup environment frontend
+      #   run: cd frontend && cp .env.example .env
 
       - name: setup environment server
         run: cd server && cp .env.example .env.development && sed -i ''  "s/^OPEN_AI_KEY=.*$/OPEN_AI_KEY=$OPENAI_TEMP_TOKEN/" .env.development
@@ -74,10 +74,20 @@ jobs:
           OPENAI_TEMP_TOKEN : ${{ secrets.OPENAI_TEMP_TOKEN }}
 
       - name: setup node_modules
-        run: cd realtimex-ai-server && unzip -qq -o node_modules.zip && mv node_modules ../server && rm -f node_modules.zip
+        if: matrix.args == '--target aarch64-apple-darwin'
+        run: cd realtimex-ai-server && unzip -qq -o node_modules-aarch64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-aarch64-apple-darwin.zip
+      
+      - name: setup node_modules
+        if: matrix.args == '--target x86_64-apple-darwin'
+        run: cd realtimex-ai-server && unzip -qq -o node_modules-x86_64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-x86_64-apple-darwin.zip
 
       - name: setup node_env
-        run: cd realtimex-ai-server && unzip -qq -o node_env.zip && mv node_env ../server && rm -f node_env.zip
+        if: matrix.args == '--target aarch64-apple-darwin'
+        run: cd realtimex-ai-server && unzip -qq -o node_env-aarch64-apple-darwin.zip && mv node_env ../server && rm -f node_env-aarch64-apple-darwin.zip
+      
+      - name: setup node_env
+        if: matrix.args == '--target x86_64-apple-darwin'
+        run: cd realtimex-ai-server && unzip -qq -o node_env-x86_64-apple-darwin.zip && mv node_env ../server && rm -f node_env-x86_64-apple-darwin.zip
 
       - name: setup python_env
         run: cd realtimex-ai-server && unzip -qq -o python_env.zip && rm -f python_env.zip
