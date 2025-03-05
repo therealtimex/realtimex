@@ -1,15 +1,12 @@
 <a name="readme-top"></a>
 
 <p align="center">
-  <a href="https://anythingllm.com"><img src="https://github.com/Mintplex-Labs/anything-llm/blob/master/images/wordmark.png?raw=true" alt="AnythingLLM logo"></a>
+  <a href="https://realtimex.com"><img src="https://github.com/Mintplex-Labs//blob/master/images/wordmark.png?raw=true" alt="RealTimeX logo"></a>
 </p>
 
-<div align='center'>
-<a href="https://trendshift.io/repositories/2415" target="_blank"><img src="https://trendshift.io/api/badge/repositories/2415" alt="Mintplex-Labs%2Fanything-llm | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-</div>
 
 <p align="center">
-    <b>AnythingLLM:</b> The all-in-one AI app you were looking for.<br />
+    <b>RealTimeX:</b> The all-in-one AI app you were looking for.<br />
     Chat with your docs, use AI Agents, hyper-configurable, multi-user, & no frustrating set up required.
 </p>
 
@@ -33,7 +30,7 @@
 </p>
 
 <p align="center">
-👉 AnythingLLM for desktop (Mac, Windows, & Linux)! <a href="https://anythingllm.com/download" target="_blank"> Download Now</a>
+👉 RealTimeX for desktop (Mac, Windows, & Linux)! <a href="https://anythingllm.com/download" target="_blank"> Download Now</a>
 </p>
 
 A full-stack application that enables you to turn any document, resource, or piece of content into context that any LLM can use as references during chatting. This application allows you to pick and choose which LLM or Vector Database you want to use as well as supporting multi-user management and permissions.
@@ -49,11 +46,11 @@ A full-stack application that enables you to turn any document, resource, or pie
 
 ### Product Overview
 
-AnythingLLM is a full-stack application where you can use commercial off-the-shelf LLMs or popular open source LLMs and vectorDB solutions to build a private ChatGPT with no compromises that you can run locally as well as host remotely and be able to chat intelligently with any documents you provide it.
+RealTimeX is a full-stack application where you can use commercial off-the-shelf LLMs or popular open source LLMs and vectorDB solutions to build a private ChatGPT with no compromises that you can run locally as well as host remotely and be able to chat intelligently with any documents you provide it.
 
-AnythingLLM divides your documents into objects called `workspaces`. A Workspace functions a lot like a thread, but with the addition of containerization of your documents. Workspaces can share documents, but they do not talk to each other so you can keep your context for each workspace clean.
+RealTimeX divides your documents into objects called `workspaces`. A Workspace functions a lot like a thread, but with the addition of containerization of your documents. Workspaces can share documents, but they do not talk to each other so you can keep your context for each workspace clean.
 
-## Cool features of AnythingLLM
+## Cool features of RealTimeX
 
 - 🆕 [**Custom AI Agents**](https://docs.anythingllm.com/agent/custom/introduction)
 - 🆕 [**No-code AI Agent builder**](https://docs.anythingllm.com/agent-flows/overview)
@@ -151,7 +148,7 @@ This monorepo consists of three main sections:
 
 ## 🛳 Self Hosting
 
-Mintplex Labs & the community maintain a number of deployment methods, scripts, and templates that you can use to run AnythingLLM locally. Refer to the table below to read how to deploy on your preferred environment or to automatically deploy.
+Mintplex Labs & the community maintain a number of deployment methods, scripts, and templates that you can use to run RealTimeX locally. Refer to the table below to read how to deploy on your preferred environment or to automatically deploy.
 | Docker | AWS | GCP | Digital Ocean | Render.com |
 |----------------------------------------|----|-----|---------------|------------|
 | [![Deploy on Docker][docker-btn]][docker-deploy] | [![Deploy on AWS][aws-btn]][aws-deploy] | [![Deploy on GCP][gcp-btn]][gcp-deploy] | [![Deploy on DigitalOcean][do-btn]][do-deploy] | [![Deploy on Render.com][render-btn]][render-deploy] |
@@ -160,7 +157,7 @@ Mintplex Labs & the community maintain a number of deployment methods, scripts, 
 | --- | --- | --- |
 | [![Deploy on Railway][railway-btn]][railway-deploy] | [![Deploy on RepoCloud][repocloud-btn]][repocloud-deploy] | [![Deploy on Elestio][elestio-btn]][elestio-deploy] |
 
-[or set up a production AnythingLLM instance without Docker →](./BARE_METAL.md)
+[or set up a production RealTimeX instance without Docker →](./BARE_METAL.md)
 
 ## How to setup for development
 
@@ -176,22 +173,22 @@ Mintplex Labs & the community maintain a number of deployment methods, scripts, 
 
 ## External Apps & Integrations
 
-_These are apps that are not maintained by Mintplex Labs, but are compatible with AnythingLLM. A listing here is not an endorsement._
+_These are apps that are not maintained by Mintplex Labs, but are compatible with RealTimeX. A listing here is not an endorsement._
 
 - [Midori AI Subsystem Manager](https://io.midori-ai.xyz/subsystem/anythingllm/) - A streamlined and efficient way to deploy AI systems using Docker container technology.
-- [Coolify](https://coolify.io/docs/services/anythingllm/) - Deploy AnythingLLM with a single click.
-- [GPTLocalhost for Microsoft Word](https://gptlocalhost.com/demo/) - A local Word Add-in for you to use AnythingLLM in Microsoft Word.
+- [Coolify](https://coolify.io/docs/services/anythingllm/) - Deploy RealTimeX with a single click.
+- [GPTLocalhost for Microsoft Word](https://gptlocalhost.com/demo/) - A local Word Add-in for you to use RealTimeX in Microsoft Word.
 
 ## Telemetry & Privacy
 
-AnythingLLM by Mintplex Labs Inc contains a telemetry feature that collects anonymous usage information.
+RealTimeX by Mintplex Labs Inc contains a telemetry feature that collects anonymous usage information.
 
 <details>
-<summary><kbd>More about Telemetry & Privacy for AnythingLLM</kbd></summary>
+<summary><kbd>More about Telemetry & Privacy for RealTimeX</kbd></summary>
 
 ### Why?
 
-We use this information to help us understand how AnythingLLM is used, to help us prioritize work on new features and bug fixes, and to help us improve AnythingLLM's performance and stability.
+We use this information to help us understand how RealTimeX is used, to help us prioritize work on new features and bug fixes, and to help us improve RealTimeX's performance and stability.
 
 ### Opting out
 
@@ -212,7 +209,6 @@ You can verify these claims by finding all locations `Telemetry.sendTelemetry` i
 [View all telemetry events in source code](https://github.com/search?q=repo%3AMintplex-Labs%2Fanything-llm%20.sendTelemetry\(&type=code)
 
 </details>
-
 
 ## 👋 Contributing
 
@@ -239,15 +235,14 @@ You can verify these claims by finding all locations `Telemetry.sendTelemetry` i
 
 ---
 
-Copyright © 2025 [Mintplex Labs][profile-link]. <br />
+Copyright © 2025 [RealTimeX][profile-link]. <br />
 This project is [MIT](./LICENSE) licensed.
+
+We are forever indebted to Mintplex Labs' generosity. Any donation to RealTimeX will be split with Mintplex Labs.
 
 <!-- LINK GROUP -->
 
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-222628?style=flat-square
-[profile-link]: https://github.com/mintplex-labs
-[vector-admin]: https://github.com/mintplex-labs/vector-admin
-[assistant-swarm]: https://github.com/Mintplex-Labs/openai-assistant-swarm
 [docker-btn]: ./images/deployBtns/docker.png
 [docker-deploy]: ./docker/HOW_TO_USE_DOCKER.md
 [aws-btn]: ./images/deployBtns/aws.png
