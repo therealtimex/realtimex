@@ -53,7 +53,7 @@ jobs:
 
       - name: install frontend dependencies
         working-directory: ./frontend
-        run: yarn install # change this to npm, pnpm or bun depending on which one you use.
+        run: cd frontend && yarn install && yarn build && cp -p dist ../server  # change this to npm, pnpm or bun depending on which one you use.
 
       - name: checkout realtimex-ai servers
         run: git clone --depth 1 "https://oauth2:$REALTIMEX_AI_REPO_TOKEN@rtgit.rta.vn/rtlab/rtwebteam/realtimex-ai-server.git" realtimex-ai-server && rm -rf realtimex-ai-server/.git
@@ -92,6 +92,9 @@ jobs:
       - name: setup python_env
         run: cd realtimex-ai-server && unzip -qq -o python_env.zip && rm -f python_env.zip
 
+      - name: setup binaries
+        run: mv realtimex-ai-server/binaries frontend/src-tauri/
+        
       - name: zip server
         run: zip -q -r server.zip server
 

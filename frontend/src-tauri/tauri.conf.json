@@ -35,7 +35,10 @@
     ],
     "externalBin": [
       "binaries/redis-server",
-      "binaries/start-app"
+      "binaries/start-app",
+      "binaries/php",
+      "binaries/RealTimeX.AI.zip",
+      "binaries/Chromium.zip"
     ],
     "resources": {
       "../../server.zip":"server.zip",
