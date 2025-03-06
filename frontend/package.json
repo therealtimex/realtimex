@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite --open",
+    "dev-kill": "kill -9 $(lsof -ti:3000)",
     "dev": "NODE_ENV=development vite --debug --host=0.0.0.0",
     "build": "vite build && node scripts/postbuild.js",
     "lint": "yarn prettier --ignore-path ../.prettierignore --write ./src",
