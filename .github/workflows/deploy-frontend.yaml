@@ -37,7 +37,7 @@ jobs:
           node-version: 18.20.6
 
       - name: install frontend dependencies
-        run: cd frontend && yarn install && yarn build
+        run: cd frontend && yarn install && yarn build && cp dist/index.html dist/404.html
         
       - name: Setup Pages
         uses: actions/configure-pages@v5
