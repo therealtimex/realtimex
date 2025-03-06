@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "RealTimeX AI",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "identifier": "co.realtimex.ai",
   "build": {
     "frontendDist": "../dist",
@@ -36,7 +36,6 @@
     "externalBin": [
       "binaries/redis-server",
       "binaries/start-app",
-      "binaries/php",
       "binaries/RealTimeX.AI.zip"
     ],
     "resources": {

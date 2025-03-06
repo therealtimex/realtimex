@@ -1,2 +1,3 @@
+vite@^4.3.0
 yarn@1.22.22
 node-prune@1.0.2
