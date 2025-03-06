@@ -1,0 +1,113 @@
+name: 'Build Desktop Apps'
+
+on:
+  push:
+    branches:
+      - release
+
+# This workflow will trigger on each push to the `release` branch to create or update a GitHub release, build your app, and upload the artifacts to the release.
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest' # for Intel based macs.
+            args: '--target x86_64-apple-darwin'
+          # - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
+          #   args: ''
+          # - platform: 'windows-latest'
+          #   args: ''
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.20.6
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+        # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
+        # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
+
+      # - name: setup environment file
+      #   working-directory: ./frontend
+      #   run: cp .env.example .env
+
+      - name: install frontend dependencies
+        run: cd frontend && yarn install && yarn build && cp -r dist ../server  # change this to npm, pnpm or bun depending on which one you use.
+
+      - name: checkout realtimex-ai servers
+        run: git clone --depth 1 "https://oauth2:$REALTIMEX_AI_REPO_TOKEN@rtgit.rta.vn/rtlab/rtwebteam/realtimex-ai-server.git" realtimex-ai-server && rm -rf realtimex-ai-server/.git
+        env:
+          REALTIMEX_AI_REPO_TOKEN : ${{ secrets.REALTIMEX_AI_REPO_TOKEN }}
+
+      # - name: setup environment frontend
+      #   run: cd frontend && cp .env.example .env
+
+      - name: setup environment server
+        run: cd server && cp .env.example .env.development && sed -i ''  "s/^OPEN_AI_KEY=.*$/OPEN_AI_KEY=$OPENAI_TEMP_TOKEN/" .env.development
+        env:
+          OPENAI_TEMP_TOKEN : ${{ secrets.OPENAI_TEMP_TOKEN }}
+      
+      - name: setup environment realtimex-ai servers
+        run: cd realtimex-ai-server &&  sed -i '' "s/OPENAI_TEMP_TOKEN/$OPENAI_TEMP_TOKEN/" OAI_CONFIG_LIST
+        env:
+          OPENAI_TEMP_TOKEN : ${{ secrets.OPENAI_TEMP_TOKEN }}
+
+      - name: setup node_modules
+        if: matrix.args == '--target aarch64-apple-darwin'
+        run: cd realtimex-ai-server && unzip -qq -o node_modules-aarch64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-*.zip
+      
+      - name: setup node_modules
+        if: matrix.args == '--target x86_64-apple-darwin'
+        run: cd realtimex-ai-server && unzip -qq -o node_modules-x86_64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-*.zip
+
+      - name: setup node_env
+        if: matrix.args == '--target aarch64-apple-darwin'
+        run: cd realtimex-ai-server && unzip -qq -o node_env-aarch64-apple-darwin.zip && mv node_env ../server && rm -f node_env-*.zip
+      
+      - name: setup node_env
+        if: matrix.args == '--target x86_64-apple-darwin'
+        run: cd realtimex-ai-server && unzip -qq -o node_env-x86_64-apple-darwin.zip && mv node_env ../server && rm -f node_env-*.zip
+
+      - name: setup python_env
+        run: cd realtimex-ai-server && unzip -qq -o python_env.zip && rm -f python_env.zip
+
+      - name: setup binaries
+        run: mv realtimex-ai-server/binaries frontend/src-tauri/
+        
+      - name: zip server
+        run: zip -q -r server.zip server
+
+      - name: zip realtimex-ai servers
+        run: zip -q -r realtimex-ai-server.zip realtimex-ai-server
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: ./frontend
+          tagName: realtimex-ai-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          releaseName: 'RealTimeX AI v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}

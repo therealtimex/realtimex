@@ -1,0 +1,1 @@
+import{bi as a}from"../index.js";const e={defaultSettings:{showScrollbar:!1},getSettings:()=>{try{const t=localStorage.getItem(a);return t?JSON.parse(t):e.defaultSettings}catch{return e.defaultSettings}},updateSettings:t=>{const s={...e.getSettings(),...t};return localStorage.setItem(a,JSON.stringify(s)),s}},r=e;export{r as A};
