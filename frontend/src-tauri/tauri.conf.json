@@ -36,7 +36,6 @@
     "externalBin": [
       "binaries/redis-server",
       "binaries/start-app",
-      "binaries/start-frontend",
       "binaries/RealTimeX.AI.zip"
     ],
     "resources": {

@@ -52,7 +52,7 @@ jobs:
       #   run: cp .env.example .env
 
       - name: install frontend dependencies
-        run: cd frontend && yarn install && yarn build && cp -r dist ../server  # change this to npm, pnpm or bun depending on which one you use.
+        run: cd frontend && yarn install && yarn build && cp dist/index.html dist/404.html && cp -r dist ../server  # change this to npm, pnpm or bun depending on which one you use.
 
       - name: checkout realtimex-ai servers
         run: git clone --depth 1 "https://oauth2:$REALTIMEX_AI_REPO_TOKEN@rtgit.rta.vn/rtlab/rtwebteam/realtimex-ai-server.git" realtimex-ai-server && rm -rf realtimex-ai-server/.git
