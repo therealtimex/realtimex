@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "RealTimeX AI",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "identifier": "co.realtimex.ai",
   "build": {
     "frontendDist": "../dist",
