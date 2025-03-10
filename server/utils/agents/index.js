@@ -186,6 +186,10 @@ class AgentHandler {
             "NVIDIA NIM base path must be provided to use agents."
           );
         break;
+      case "ppio":
+        if (!process.env.PPIO_API_KEY)
+          throw new Error("PPIO API Key must be provided to use agents.");
+        break;
 
       default:
         throw new Error(
@@ -251,6 +255,8 @@ class AgentHandler {
         return process.env.NOVITA_LLM_MODEL_PREF ?? "deepseek/deepseek-r1";
       case "nvidia-nim":
         return process.env.NVIDIA_NIM_LLM_MODEL_PREF ?? null;
+      case "ppio":
+        return process.env.PPIO_MODEL_PREF ?? "qwen/qwen2.5-32b-instruct";
       default:
         return null;
     }

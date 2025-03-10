@@ -96,6 +96,7 @@ RealTimeX divides your documents into objects called `workspaces`. A Workspace f
 - [Apipie](https://apipie.ai/)
 - [xAI](https://x.ai/)
 - [Novita AI (chat models)](https://novita.ai/model-api/product/llm-api?utm_source=github_anything-llm&utm_medium=github_readme&utm_campaign=link)
+- [PPIO](https://ppinfra.com?utm_source=github_anything-llm)
 
 **Embedder models:**
 
