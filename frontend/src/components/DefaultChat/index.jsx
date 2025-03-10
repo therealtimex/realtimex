@@ -18,8 +18,10 @@ import { userFromStorage } from "@/utils/request";
 import useUser from "@/hooks/useUser";
 import { useTranslation, Trans } from "react-i18next";
 import Appearance from "@/models/appearance";
+import { useChatMessageAlignment } from "@/hooks/useChatMessageAlignment";
 
 export default function DefaultChatContainer() {
+  const { getMessageAlignment } = useChatMessageAlignment();
   const { showScrollbar } = Appearance.getSettings();
   const [mockMsgs, setMockMessages] = useState([]);
   const { user } = useUser();
@@ -43,7 +45,7 @@ export default function DefaultChatContainer() {
   const MESSAGES = [
     <React.Fragment key="msg1">
       <MessageContainer>
-        <MessageContent>
+        <MessageContent alignmentCls={getMessageAlignment("assistant")}>
           <UserIcon user={{ uid: "system" }} role={"assistant"} />
           <MessageText>Welcome to REALTIMEX AI!</MessageText>
         </MessageContent>
@@ -120,8 +122,8 @@ function MessageContainer({ children }) {
   );
 }
 
-function MessageContent({ children }) {
-  return <div className="flex gap-x-5">{children}</div>;
+function MessageContent({ children, alignmentCls = "" }) {
+  return <div className={`flex gap-x-5 ${alignmentCls}`}>{children}</div>;
 }
 
 function MessageText({ children }) {
