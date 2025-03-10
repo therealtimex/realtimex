@@ -89,6 +89,9 @@ jobs:
       - name: setup node_modules
         run: cd server && node_env/lib/node_modules/yarn/bin/yarn install && node_env/lib/node_modules/yarn/bin/yarn prisma:setup
 
+      - name: setup prisma
+        run: server/node_env/lib/node_modules/yarn/bin/yarn  prisma:setup
+
       # - name: setup node_modules
       #   if: matrix.args == '--target aarch64-apple-darwin'
       #   run: cd realtimex-ai-server && unzip -qq -o node_modules-aarch64-apple-darwin.zip && mv node_modules ../server && rm -f node_modules-*.zip
