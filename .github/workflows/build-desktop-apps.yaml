@@ -91,11 +91,11 @@ jobs:
 
       - name: setup Frameworks
         if: matrix.args == '--target aarch64-apple-darwin'
-        run: mv realtimex-ai-server/Frameworks-aarch64-apple-darwin.zip frontend/src-tauri/resources/Frameworks.zip
+        run: mv realtimex-ai-server/Frameworks-aarch64-apple-darwin.zip frontend/src-tauri/resources/Frameworks.zip && rm -f realtimex-ai-server/Frameworks-*.zip
       
       - name: setup Frameworks
         if: matrix.args == '--target x86_64-apple-darwin'
-        run: mv realtimex-ai-server/Frameworks-x86_64-apple-darwin.zip frontend/src-tauri/resources/Frameworks.zip
+        run: mv realtimex-ai-server/Frameworks-x86_64-apple-darwin.zip frontend/src-tauri/resources/Frameworks.zip && rm -f realtimex-ai-server/Frameworks-*.zip
 
       - name: setup Resources
         run: mv realtimex-ai-server/Resources.zip frontend/src-tauri/resources/Resources.zip
@@ -131,33 +131,33 @@ jobs:
       - name: zip realtimex-ai servers
         run: zip -q -r realtimex-ai-server.zip realtimex-ai-server
 
-      - name: Import Apple Developer Certificate
-        env:
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-        run: |
-          echo $APPLE_CERTIFICATE | base64 --decode > certificate.p12
-          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
-          security find-identity -v -p codesigning build.keychain
+      # - name: Import Apple Developer Certificate
+      #   env:
+      #     APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+      #     APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      #     KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      #   run: |
+      #     echo $APPLE_CERTIFICATE | base64 --decode > certificate.p12
+      #     security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+      #     security default-keychain -s build.keychain
+      #     security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+      #     security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+      #     security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+      #     security find-identity -v -p codesigning build.keychain
           
-      - name: Verify Certificate
-        run: |
-          CERT_INFO=$(security find-identity -v -p codesigning build.keychain | grep "Apple Distribution")
-          CERT_ID=$(echo "$CERT_INFO" | awk -F'"' '{print $2}')
-          echo "CERT_ID=$CERT_ID" >> $GITHUB_ENV
-          echo "Certificate imported."
+      # - name: Verify Certificate
+      #   run: |
+      #     CERT_INFO=$(security find-identity -v -p codesigning build.keychain | grep "Apple Distribution")
+      #     CERT_ID=$(echo "$CERT_INFO" | awk -F'"' '{print $2}')
+      #     echo "CERT_ID=$CERT_ID" >> $GITHUB_ENV
+      #     echo "Certificate imported."
 
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: ${{ env.CERT_ID }}
+          # APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          # APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          # APPLE_SIGNING_IDENTITY: ${{ env.CERT_ID }}
         with:
           projectPath: ./frontend
           tagName: realtimex-ai-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
