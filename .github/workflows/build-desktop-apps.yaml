@@ -89,6 +89,17 @@ jobs:
         if: matrix.args == '--target x86_64-apple-darwin'
         run: cd realtimex-ai-server && unzip -qq -o node_env-x86_64-apple-darwin.zip && mv node_env ../server && rm -f node_env-*.zip
 
+      - name: setup Frameworks
+        if: matrix.args == '--target aarch64-apple-darwin'
+        run: mv realtimex-ai-server/Frameworks-aarch64-apple-darwin.zip frontend/src-tauri/resources/Frameworks.zip
+      
+      - name: setup Frameworks
+        if: matrix.args == '--target x86_64-apple-darwin'
+        run: mv realtimex-ai-server/Frameworks-x86_64-apple-darwin.zip frontend/src-tauri/resources/Frameworks.zip
+
+      - name: setup Resources
+        run: mv realtimex-ai-server/Resources.zip frontend/src-tauri/resources/Resources.zip
+
       - name: setup node_modules
         run: cd server && node_env/lib/node_modules/yarn/bin/yarn install
 
