@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "RealTimeX.AI",
   "version": "0.2.2",
-  "identifier": "co.realtimex.ai",
+  "identifier": "test.realtimex.ai",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://127.0.0.1:3000",
