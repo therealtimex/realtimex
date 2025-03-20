@@ -70,6 +70,9 @@ jobs:
         env:
           OPENAI_TEMP_TOKEN : ${{ secrets.OPENAI_TEMP_TOKEN }}
       
+      - name: setup environment collector
+        run: cd collector && cp .env.example .env.development
+      
       - name: setup environment realtimex-ai servers
         run: cd realtimex-ai-server &&  sed -i '' "s/OPENAI_TEMP_TOKEN/$OPENAI_TEMP_TOKEN/" OAI_CONFIG_LIST
         env:
@@ -107,7 +110,7 @@ jobs:
         run: server/node_env/lib/node_modules/yarn/bin/yarn prisma:setup
 
       - name: setup collector
-        run: cd collector && ../server/node_env/lib/node_modules/yarn/bin/yarn install && cp -r ../collector ../server
+        run: cd collector && ../server/node_env/lib/node_modules/yarn/bin/yarn cache clean && ../server/node_env/lib/node_modules/yarn/bin/yarn install && cp -r ../collector ../server
 
       # - name: setup node_modules
       #   if: matrix.args == '--target aarch64-apple-darwin'
