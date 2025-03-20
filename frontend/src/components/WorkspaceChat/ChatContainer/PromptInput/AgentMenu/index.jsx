@@ -41,6 +41,25 @@ function AbilityTag({ text }) {
   );
 }
 
+async function fetchAvailableAgents(setAgents) {
+  try {
+    const response = await fetch(
+      "https://eventlog.rta.vn/items/teamwork_group?filter={\"status\":\"published\"}&fields=name,display_name",
+      {
+        headers: {
+          Authorization: "Bearer YQokt47D95menrKfLC6kW16Denutwz7N",
+        },
+      }
+    );
+    const data = await response.json();
+    if (data.data) {
+      setAgents(data.data.map((agent) => { return {"name": agent.name, "fullname":agent.display_name}; }));
+    }
+  } catch (error) {
+    console.error("Failed to fetch agents:", error);
+  }
+}
+
 export function AvailableAgents({
   showing,
   setShowing,
@@ -49,6 +68,8 @@ export function AvailableAgents({
 }) {
   const formRef = useRef(null);
   const agentSessionActive = useIsAgentSessionActive();
+  const [agents, setAgents] = useState([]);
+
   useEffect(() => {
     function listenForOutsideClick() {
       if (!showing || !formRef.current) return false;
@@ -56,6 +77,10 @@ export function AvailableAgents({
     }
     listenForOutsideClick();
   }, [showing, formRef.current]);
+
+  useEffect(() => {
+    fetchAvailableAgents(setAgents);
+  }, []);
 
   const closeIfOutside = ({ target }) => {
     if (target.id === "agent-list-btn") return;
@@ -130,17 +155,23 @@ export function AvailableAgents({
                 </div>
               </div>
             </button>
-            <button
-              type="button"
-              disabled={true}
-              className="w-full rounded-xl flex flex-col justify-start group"
-            >
-              <div className="w-full flex-col text-center flex pointer-events-none">
-                <div className="text-theme-text-secondary text-xs italic">
-                  custom agents are coming soon!
+            {agents.map((agent) => (
+              <button
+                key={agent}
+                onClick={() => {
+                  setShowing(false);
+                  sendCommand(`@${agent.name} `, false);
+                  promptRef?.current?.focus();
+                }}
+                className="border-none w-full hover:cursor-pointer hover:bg-theme-action-menu-item-hover px-2 py-2 rounded-xl flex flex-col justify-start group"
+              >
+                <div className="w-full flex-col text-left flex pointer-events-none">
+                  <div className="text-theme-text-primary text-sm">
+                    <b>@{agent.name}</b> - {agent.fullname}.
+                  </div>
                 </div>
-              </div>
-            </button>
+              </button>
+            ))}
           </div>
         </div>
       </div>
