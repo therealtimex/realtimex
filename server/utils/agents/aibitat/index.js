@@ -654,7 +654,8 @@ Only return the role.
       });
 
       return "";
-    }else if (this.agentName == "@task"){
+    // }else if (this.agentName == "@task"){
+    }else if (this.agentName != "@agent" && this.agentName.startsWith("@")){
       const ctrl = new AbortController();
       // console.log("2323ewqe")
       var self = this
@@ -667,6 +668,8 @@ Only return the role.
           Accept: "application/json",
         },
         body: JSON.stringify({
+          "agent_name":this.agentName,
+          "workspace_slug": this.handlerProps.invocation.workspace.slug,
           "messages":chat_messages,
           "config":{
               "builder_model":"gpt-4o-mini",
@@ -681,6 +684,7 @@ Only return the role.
       });
 
       console.log("lalaallll")
+      console.log(this.uuid)
 
       await fetchEventSource('http://127.0.0.1:8002/task/chat', {
         method: 'POST',
