@@ -159,18 +159,12 @@ You can verify these claims by finding all locations `Telemetry.sendTelemetry` i
 
 - create issue
 - create PR with branch name format of `<issue number>-<short name>`
-- LGTM from core-team
 
 ## 🌟 Contributors
 
 [![anythingllm contributors](https://contrib.rocks/image?repo=mintplex-labs/anything-llm)](https://github.com/mintplex-labs/anything-llm/graphs/contributors)
 
 [![Star History Chart](https://api.star-history.com/svg?repos=mintplex-labs/anything-llm&type=Timeline)](https://star-history.com/#mintplex-labs/anything-llm&Date)
-
-## 🔗 More Products
-
-- **[VectorAdmin][vector-admin]:** An all-in-one GUI & tool-suite for managing vector databases.
-- **[OpenAI Assistant Swarm][assistant-swarm]:** Turn your entire library of OpenAI assistants into one single army commanded from a single agent.
 
 <div align="right">
 
@@ -180,29 +174,7 @@ You can verify these claims by finding all locations `Telemetry.sendTelemetry` i
 
 ---
 
-Copyright © 2025 [RealTimeX][profile-link]. <br />
+Copyright © 2025 [RealTimeX](https://realtimex.ai/). <br />
 This project is [MIT](./LICENSE) licensed.
 
 We are forever indebted to Mintplex Labs' generosity. Any donation to RealTimeX will be split with Mintplex Labs.
-
-<!-- LINK GROUP -->
-
-[back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-222628?style=flat-square
-[docker-btn]: ./images/deployBtns/docker.png
-[docker-deploy]: ./docker/HOW_TO_USE_DOCKER.md
-[aws-btn]: ./images/deployBtns/aws.png
-[aws-deploy]: ./cloud-deployments/aws/cloudformation/DEPLOY.md
-[gcp-btn]: https://deploy.cloud.run/button.svg
-[gcp-deploy]: ./cloud-deployments/gcp/deployment/DEPLOY.md
-[do-btn]: https://www.deploytodo.com/do-btn-blue.svg
-[do-deploy]: ./cloud-deployments/digitalocean/terraform/DEPLOY.md
-[render-btn]: https://render.com/images/deploy-to-render-button.svg
-[render-deploy]: https://render.com/deploy?repo=https://github.com/Mintplex-Labs/anything-llm&branch=render
-[render-btn]: https://render.com/images/deploy-to-render-button.svg
-[render-deploy]: https://render.com/deploy?repo=https://github.com/Mintplex-Labs/anything-llm&branch=render
-[railway-btn]: https://railway.app/button.svg
-[railway-deploy]: https://railway.app/template/HNSCS1?referralCode=WFgJkn
-[repocloud-btn]: https://d16t0pc4846x52.cloudfront.net/deploylobe.svg
-[repocloud-deploy]: https://repocloud.io/details/?app_id=276
-[elestio-btn]: https://elest.io/images/logos/deploy-to-elestio-btn.png
-[elestio-deploy]: https://elest.io/open-source/anythingllm
