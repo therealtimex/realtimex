@@ -1,8 +1,9 @@
 <a name="readme-top"></a>
 
 <p align="center">
-  <a href="https://realtimex.com"><img src="https://github.com/Mintplex-Labs//blob/master/images/wordmark.png?raw=true" alt="RealTimeX logo"></a>
+  <a href="https://realtimex.com"><img src="https://github.com/user-attachments/assets/08d555cb-4caf-41e1-a0ba-a2460d2cb3c6?raw=true" alt="RealTimeX logo"></a>
 </p>
+
 
 
 <p align="center">
