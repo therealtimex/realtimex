@@ -2,6 +2,7 @@ import useGetProviderModels, {
   DISABLED_PROVIDERS,
 } from "@/hooks/useGetProvidersModels";
 import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
 
 export default function ChatModelSelection({
   provider,
@@ -11,6 +12,17 @@ export default function ChatModelSelection({
   const { defaultModels, customModels, loading } =
     useGetProviderModels(provider);
   const { t } = useTranslation();
+  const [selectedModel, setSelectedModel] = useState(
+    workspace?.chatModel || ""
+  );
+
+  useEffect(() => {
+    if (workspace?.chatProvider !== provider) {
+      setSelectedModel("");
+    } else {
+      setSelectedModel(workspace?.chatModel || "");
+    }
+  }, [provider, workspace?.chatProvider, workspace?.chatModel]);
   if (DISABLED_PROVIDERS.includes(provider)) return null;
 
   if (loading) {
@@ -52,8 +64,10 @@ export default function ChatModelSelection({
       <select
         name="chatModel"
         required={true}
-        onChange={() => {
+        value={selectedModel}
+        onChange={(e) => {
           setHasChanges(true);
+          setSelectedModel(e.target.value);
         }}
         className="border-none bg-theme-settings-input-bg text-white text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
       >
@@ -61,11 +75,7 @@ export default function ChatModelSelection({
           <optgroup label="General models">
             {defaultModels.map((model) => {
               return (
-                <option
-                  key={model}
-                  value={model}
-                  selected={workspace?.chatModel === model}
-                >
+                <option key={model} value={model}>
                   {model}
                 </option>
               );
@@ -76,11 +86,7 @@ export default function ChatModelSelection({
           <optgroup label="Discovered models">
             {customModels.map((model) => {
               return (
-                <option
-                  key={model.id}
-                  value={model.id}
-                  selected={workspace?.chatModel === model.id}
-                >
+                <option key={model.id} value={model.id}>
                   {model.id}
                 </option>
               );
@@ -94,11 +100,7 @@ export default function ChatModelSelection({
               {Object.entries(customModels).map(([organization, models]) => (
                 <optgroup key={organization} label={organization}>
                   {models.map((model) => (
-                    <option
-                      key={model.id}
-                      value={model.id}
-                      selected={workspace?.chatModel === model.id}
-                    >
+                    <option key={model.id} value={model.id}>
                       {model.name}
                     </option>
                   ))}
